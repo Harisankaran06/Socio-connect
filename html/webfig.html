@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socio Connect Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+      body::before,
+      body::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(174, 144, 255, 0.2);
+        z-index: 0;
+      }
+      body::before {
+        width: 400px;
+        height: 400px;
+        top: -100px;
+        left: -100px;
+      }
+      body::after {
+        width: 300px;
+        height: 300px;
+        bottom: -80px;
+        right: -80px;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(135deg, #e8ebff, #f8f5ff);
+        overflow: hidden;
+      }
+      .header {
+        width: 100%;
+        background: #fff;
+        border-bottom: 1px solid #ececec;
+        padding: 32px 40px 18px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 12px rgba(155, 92, 241, 0.04);
+      }
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+        color: #6a7dff;
+      }
+      .user-area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .user-avatar {
+        width: 44px;
+        height: 44px;
+        background: #9b5cf1;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin-right: 8px;
+        box-shadow: 0 2px 8px rgba(155,92,241,0.10);
+      }
+      .user-name {
+        color: #444;
+        font-size: 1.08rem;
+        margin-right: 2px;
+        font-weight: 500;
+      }
+      .logout-btn {
+        border: none;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 0 1px #ddd;
+        font-size: 1rem;
+        padding: 6px 18px;
+        color: #9b5cf1;
+        cursor: pointer;
+        transition: background 0.18s, box-shadow 0.16s, color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+      }
+      .logout-btn:hover {
+        background: #f4f4fa;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(155, 92, 241, 0.08);
+        background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      }
+      .dashboard-main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 36px;
+      }
+      .dashboard-title {
+        font-size: 2rem;
+        color: #6a7dff;
+        margin-bottom: 8px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .dashboard-subtitle {
+        color: #888;
+        font-size: 1.15rem;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(210px, 1fr));
+        gap: 32px 40px;
+        max-width: 950px;
+        width: 100%;
+        justify-items: center;
+        margin-top: 10px;
+      }
+      .dashboard-card {
+        background: #fff;
+        border: 1.5px solid #ececec;
+        border-radius: 16px;
+        padding: 38px 30px 32px 30px;
+        min-width: 245px;
+        max-width: 290px;
+        min-height: 148px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 4px 16px rgba(155, 92, 241, 0.08);
+        transition: box-shadow 0.16s, border 0.14s;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .dashboard-card:hover {
+        border: 1.5px solid #9b5cf1;
+        box-shadow: 0 8px 24px rgba(155, 92, 241, 0.13);
+        background: #f8faff;
+      }
+      .card-icon {
+        font-size: 2.3rem;
+        margin-bottom: 12px;
+        color: #9b5cf1;
+      }
+      .card-title {
+        font-weight: 600;
+        font-size: 1.14rem;
+        color: #23222c;
+        margin-bottom: 6px;
+        text-align: center;
+      }
+      .card-desc {
+        font-size: 1rem;
+        color: #888fa2;
+        text-align: center;
+      }
+      @media (max-width: 950px) {
+        .card-grid {
+          grid-template-columns: repeat(2, minmax(210px, 1fr));
+          gap: 18px 20px;
+        }
+      }
+      @media (max-width: 630px) {
+        .header { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 10px 16px 10px;}
+        .dashboard-main { margin-top: 18px; }
+        .card-grid { grid-template-columns: 1fr; gap: 14px 0; max-width: 98vw;}
+        .dashboard-card { min-width: 180px; max-width: 97vw; }
+        .user-area { gap: 10px; }
+        .user-avatar { width: 38px; height: 38px; font-size: 1.2rem; margin-right: 6px; }
+      }
+    </style>
+  <!-- Optionally add icons from https://fonts.googleapis.com/icon?family=Material+Icons+Outlined or SVGs -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Socio Connect</div>
+    <div class="user-area">
+      <span class="material-icons-outlined user-avatar" aria-label="User">person</span>
+      <span class="user-name">Admin User</span>
+      <button class="logout-btn"><span class="material-icons-outlined">logout</span>Log Out</button>
+    </div>
+  </header>
+  <main class="dashboard-main">
+    <div class="dashboard-title">Welcome to your dashboard</div>
+    <div class="dashboard-subtitle">Select an option below to get started</div>
+    <section class="card-grid">
+      <div class="dashboard-card">
+        <span class="material-icons-outlined card-icon">dashboard</span>
+        <div class="card-title">Dashboard</div>
+        <div class="card-desc">Overview and main metrics</div>
+      </div>
+      <div class="dashboard-card">
+        <span class="material-icons-outlined card-icon">apartment</span>
+        <div class="card-title">Departments</div>
+        <div class="card-desc">Manage organizational units</div>
+      </div>
+      <div class="dashboard-card">
+        <span class="material-icons-outlined card-icon">map</span>
+        <div class="card-title">Map View</div>
+        <div class="card-desc">Geographic data visualization</div>
+      </div>
+      <div class="dashboard-card">
+        <span class="material-icons-outlined card-icon">bar_chart</span>
+        <div class="card-title">Analysis</div>
+        <div class="card-desc">Data analysis and insights</div>
+      </div>
+      <div class="dashboard-card">
+        <span class="material-icons-outlined card-icon">trending_up</span>
+        <div class="card-title">Performance</div>
+        <div class="card-desc">Performance metrics and KPIs</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

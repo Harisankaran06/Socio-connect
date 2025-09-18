@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Socio Connect Admin Dashboard - System Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #e8ebff, #f8f5ff);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      color: #232323;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(174, 144, 255, 0.2);
+      z-index: 0;
+    }
+    body::before {
+      width: 400px;
+      height: 400px;
+      top: -120px;
+      left: -120px;
+    }
+    body::after {
+      width: 300px;
+      height: 300px;
+      bottom: -80px;
+      right: -80px;
+    }
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      background: #fff;
+      color: #333;
+      float: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: fixed;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+      z-index: 1;
+      border-radius: 0 16px 16px 0;
+    }
+    .sidebar-header {
+      padding: 20px 18px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .sidebar-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .sidebar-header span {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .menu {
+      list-style: none;
+      margin: 20px 0 0 0;
+      padding: 0;
+    }
+    .menu li {
+      padding: 12px 22px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 4px 12px;
+      color: #333;
+    }
+    .menu li:hover {
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+    }
+    .menu li.active {
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+    }
+    .profile {
+      background: #f9f9f9;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #eee;
+    }
+    .profile-pic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ccc;
+      margin-right: 10px;
+    }
+    .profile-name {
+      display: block;
+      font-weight: 600;
+      color: #333;
+    }
+    .profile-role {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .profile button {
+      margin-left: auto;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+    .profile button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(155, 92, 241, 0.3);
+    }
+    .main-content {
+      margin-left: 260px;
+      padding: 32px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #333;
+    }
+    .settings-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 0.1em;
+      color: #252527;
+    }
+    .settings-subtitle {
+      color: #525252;
+      margin-bottom: 1.8em;
+      font-size: 1.07rem;
+      font-weight: 500;
+    }
+    .settings-section {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+      padding: 28px 30px 18px 30px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .settings-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      color: #34344b;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .settings-label {
+      font-weight: 600;
+      color: #313245;
+      margin-bottom: 7px;
+      display: block;
+    }
+    .settings-field {
+      margin-right: 36px;
+      margin-bottom: 18px;
+      flex: 1 1 170px;
+      max-width: 200px;
+    }
+    .settings-field input[type="number"] {
+      width: 100%;
+      padding: 10px 13px;
+      font-size: 1.03rem;
+      border-radius: 7px;
+      border: 1.1px solid #e3e6ef;
+      background: #fbfbfd;
+    }
+    .settings-note {
+      font-size: 0.93rem;
+      color: #567;
+      background: #edf1ff;
+      padding: 11px 15px;
+      border-radius: 6px;
+      margin-top: 7px;
+      margin-bottom: 7px;
+      display: inline-block;
+    }
+    .notification-group {
+      margin-bottom: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .notification-details {
+      flex: 1;
+    }
+    .notification-label {
+      font-weight: 600;
+      color: #232323;
+      font-size: 1.01rem;
+      margin-bottom: 1px;
+    }
+    .notification-desc {
+      font-size: 0.97rem;
+      color: #888;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      margin-left: 16px;
+    }
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #fff;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .switch input:checked + .slider {
+      background: linear-gradient(90deg, #9b5cf1 30%, #6a7dff 100%);
+    }
+    .switch input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+    .save-btn {
+      padding: 13px 40px;
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 8px;
+      font-size: 1.09rem;
+      margin-top: 18px;
+      float: right;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(85,78,188,0.06);
+      letter-spacing: 0.03em;
+    }
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; }
+      .main-content { margin-left: 60px; padding: 20px; }
+      .sidebar-header h2, .sidebar-header span, .sidebar-header img, .menu li span { display: none; }
+      .settings-section { padding: 20px 10px 11px 10px; }
+      .profile .profile-name, .profile .profile-role { display: none; }
+    }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-thumb { background: #e8e8ef; border-radius: 6px;}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Socio Connect</h2>
+      <span>Admin Portal</span>
+    </div>
+    <ul class="menu" id="sidebar-menu">
+      <li><a href="Dashboard.html"   style="color: inherit; text-decoration: none; display: block;">Dashboard</a></li>
+      <li><a href="Complaints.html" style="color: inherit; text-decoration: none; display: block;">Complaints</a></li>
+      <li><a href="analytics.html" style="color: inherit; text-decoration: none; display: block;">Analytics</a></li>
+      <li>Escalations</li>
+      <li>Audit Logs</li>
+      <li>User Management</li>
+      <li class="active">Settings</li>
+    </ul>
+    <div class="profile">
+      <div class="profile-pic"></div>
+      <div>
+        <span class="profile-name">Admin User</span>
+        <span class="profile-role">Administrator</span>
+      </div>
+      <button onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="dashboard-header">
+      <h1>System Settings</h1>
+      <div>
+        <input type="search" placeholder="Search..." class="search" />
+        <span class="notification-icon"></span>
+      </div>
+    </header>
+    <div class="settings-title">System configuration and preferences</div>
+
+    <!-- SLA Configuration -->
+    <div class="settings-section">
+      <h2><span style="color:#6a7dff;">⏱️</span> SLA Configuration</h2>
+      <div class="settings-row">
+        <div class="settings-field">
+          <label class="settings-label">Critical Priority (Hours)</label>
+          <input type="number" value="4" min="1" />
+        </div>
+        <div class="settings-field">
+          <label class="settings-label">High Priority (Hours)</label>
+          <input type="number" value="24" min="1" />
+        </div>
+        <div class="settings-field">
+          <label class="settings-label">Medium Priority (Hours)</label>
+          <input type="number" value="72" min="1" />
+        </div>
+        <div class="settings-field">
+          <label class="settings-label">Low Priority (Hours)</label>
+          <input type="number" value="168" min="1" />
+        </div>
+      </div>
+      <div class="settings-note">
+        <b>Note:</b> SLA timelines are calculated from complaint creation time. Auto-escalation triggers when deadlines are missed.
+      </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div class="settings-section">
+      <h2><span style="color:#62ce6a;">🔔</span> Notification Settings</h2>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Email Notifications</div>
+          <div class="notification-desc">Send email notifications to staff and citizens</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Sms Notifications</div>
+          <div class="notification-desc">Send SMS alerts for critical updates</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Escalation Alerts</div>
+          <div class="notification-desc">Alert supervisors when complaints are escalated</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Daily Reports</div>
+          <div class="notification-desc">Automated daily performance reports</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- System Configuration -->
+    <div class="settings-section">
+      <h2><span style="color:#a47aff;">🗄️</span> System Configuration</h2>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Auto Assignment</div>
+          <div class="notification-desc">Automatically assign complaints based on location and category</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Public Transparency</div>
+          <div class="notification-desc">Enable public transparency dashboard for aggregated data</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Media Verification</div>
+          <div class="notification-desc">Require photo/video proof for complaint resolution</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Geo Validation</div>
+          <div class="notification-desc">Validate GPS coordinates in submitted media</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Security & Access -->
+    <div class="settings-section">
+      <h2><span style="color:#e74c3c;">🛡️</span> Security & Access</h2>
+      <div class="settings-row">
+        <div class="settings-field">
+          <label class="settings-label">Session Timeout (minutes)</label>
+          <input type="number" value="30" min="1" />
+        </div>
+        <div class="settings-field">
+          <label class="settings-label">Max Login Attempts</label>
+          <input type="number" value="5" min="1" />
+        </div>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Two-Factor Authentication</div>
+          <div class="notification-desc">Require 2FA for all admin accounts</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="notification-group">
+        <div class="notification-details">
+          <div class="notification-label">Audit Log Retention</div>
+          <div class="notification-desc">Keep audit logs for compliance (365 days)</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    <button class="save-btn" onclick="alert('Settings saved (demo)!')">Save</button>
+    <div style="clear:both"></div>
+  
+  </main>
+  <script>
+    function logout() { alert("Logged out!"); }
+  </script>
+</body>
+</html>

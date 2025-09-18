@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Socio Connect Admin Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #e8ebff, #f8f5ff);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(174, 144, 255, 0.2);
+      z-index: 0;
+    }
+    body::before {
+      width: 400px;
+      height: 400px;
+      top: -120px;
+      left: -120px;
+    }
+    body::after {
+      width: 300px;
+      height: 300px;
+      bottom: -80px;
+      right: -80px;
+    }
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      background: #fff;
+      color: #333;
+      float: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: fixed;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+      z-index: 1;
+      border-radius: 0 16px 16px 0;
+    }
+    .sidebar-header {
+      padding: 20px 18px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .sidebar-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .sidebar-header span {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .menu {
+      list-style: none;
+      margin: 20px 0 0 0;
+      padding: 0;
+    }
+    .menu li {
+      padding: 12px 22px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 4px 12px;
+      color: #333;
+    }
+    .menu li:hover {
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+    }
+    .menu li.active {
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+    }
+    .profile {
+      background: #f9f9f9;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #eee;
+    }
+    .profile-pic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ccc;
+      margin-right: 10px;
+    }
+    .profile-name {
+      display: block;
+      font-weight: 600;
+      color: #333;
+    }
+    .profile-role {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .profile button {
+      margin-left: auto;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+    .profile button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(155, 92, 241, 0.3);
+    }
+    .main-content {
+      margin-left: 260px;
+      padding: 32px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #333;
+    }
+    .search {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 1px solid #e0e0e0;
+      background: #f9f9f9;
+      font-size: 15px;
+      transition: border 0.3s;
+    }
+    .search:focus {
+      border-color: #9b5cf1;
+      outline: none;
+      background: #fff;
+    }
+    .notification-icon {
+      margin-left: 16px;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(to right, #9b5cf1, #6a7dff);
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+    }
+    .notification-icon::after {
+      content: '3';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ff4d4f;
+      color: white;
+      font-size: 12px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+    .stats-cards {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .stats-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 28px 32px;
+      text-align: center;
+      min-width: 180px;
+      flex: 1;
+      transition: transform 0.2s;
+    }
+    .stats-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(155, 92, 241, 0.15);
+    }
+    .stats-card h2 {
+      margin: 0;
+      font-size: 2rem;
+      color: #333;
+    }
+    .stats-card p {
+      color: #888;
+      margin-top: 4px;
+    }
+    .dashboard-widgets {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .widget {
+      background: #fff;
+      border-radius: 16px;
+      padding: 26px;
+      flex: 1;
+      min-width: 330px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .widget:hover {
+      transform: translateY(-3px);
+    }
+    .export-btns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+    .export-btns button {
+      background: transparent;
+      border: 2px solid #9b5cf1;
+      color: #9b5cf1;
+      border-radius: 10px;
+      padding: 0.75rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .export-btns button:hover {
+      background: #9b5cf1;
+      color: white;
+    }
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 60px;
+      }
+      .main-content {
+        margin-left: 60px;
+        padding: 16px;
+      }
+      .sidebar-header h2, .sidebar-header span, .sidebar-header img, .menu li, .profile {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Socio Connect</h2>
+      <span>Admin Portal</span>
+    </div>
+    <ul class="menu" id="sidebar-menu">
+      <li ><a href="Dashboard.html"   style="color: inherit; text-decoration: none; display: block;">Dashboard</a></li>
+      <li><a href="complaints.html" style="color: inherit; text-decoration: none; display: block;">Complaints</a></li>
+      
+      <li class="active"><a href="#" style="color :inherit; text-decoration: none; display: block;">Analysis</a></li>
+      <li>Escalations</li>
+      <li>Audit Logs</li>
+      <li>User Management</li>
+      <li><a href="setting.html" style="color :inherit; text-decoration: none; display: block;">Settings</a></li>
+    </ul>
+    <div class="profile">
+      <div class="profile-pic"></div>
+      <div>
+        <span class="profile-name">Admin User</span>
+        <span class="profile-role">Administrator</span>
+      </div>
+      <button onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="dashboard-header">
+      <h1>Analytics & Reports</h1>
+      <div>
+        <input type="search" placeholder="Search..." class="search" />
+        <span class="notification-icon"></span>
+      </div>
+    </header>
+    <section class="stats-cards" id="stats"></section>
+    <section class="dashboard-widgets" id="widgets"></section>
+    <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+      <div style="text-align: center;">
+        <svg width="90" height="90" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#eee"/>
+          <ellipse cx="9" cy="10" rx="1.5" ry="2" fill="#b0b0b0"/>
+          <ellipse cx="15" cy="10" rx="1.5" ry="2" fill="#b0b0b0"/>
+          <path d="M9 16c.5-.67 1.71-1 3-1s2.5.33 3 1" stroke="#b0b0b0" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h2 style="color: #888; margin-top: 22px;">No Complaints</h2>
+        <p style="color: #aaa;">There are currently no complaints or activity to show.</p>
+      </div>
+    </div>
+    <section style="margin-top: 36px;">
+      <div class="dashboard-widgets">
+        <div class="widget">
+          <h3>Department Performance Analysis</h3>
+          <div style="overflow-x:auto;">
+            <table class="department-table" style="width: 100%; border-collapse: collapse; font-weight: 500; color: #444;">
+              <thead>
+                <tr>
+                  <th>DEPARTMENT</th>
+                  <th>COMPLAINTS</th>
+                  <th>RESOLVED</th>
+                  <th>SUCCESS RATE</th>
+                  <th>AVG TIME</th>
+                  <th>SATISFACTION</th>
+                  <th>TREND</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Empty template for data -->
+              </tbody>
+            </table>
+            <div class="export-btns">
+              <button>Performance Report (PDF)</button>
+              <button>Complaints Data (CSV)</button>
+              <button>Audit Trail (JSON)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const menuItems = document.querySelectorAll('#sidebar-menu li');
+    const dashboardItem = document.querySelector('.dashboard-item');
+    dashboardItem.style.color = '#333';
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        menuItems.forEach(i => {
+          i.classList.remove('active');
+          if(i.classList.contains('dashboard-item')) {
+            i.style.color = '#333';
+          }
+        });
+        this.classList.add('active');
+        if(this.classList.contains('dashboard-item')) {
+          this.style.color = '';
+        }
+      });
+    });
+
+    // Stats cards
+    const statsData = [
+      { label: "Total Complaints" },
+      { label: "Resolved Complaints" },
+      { label: "Pending Complaints" },
+      { label: "Escalations" },
+      { label: "Active Users" }
+    ];
+    function renderStats() {
+      const stats = document.getElementById("stats");
+      stats.innerHTML = "";
+      statsData.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "stats-card";
+        card.innerHTML = `<h2>0</h2><p>${item.label}</p>`;
+        stats.appendChild(card);
+      });
+    }
+    // Widgets (for future data use)
+    const widgetsData = [
+      { label: "Complaints Chart" },
+      { label: "Resolution Rate" },
+      { label: "Satisfaction Scores" }
+    ];
+    function renderWidgets() {
+      const widgets = document.getElementById("widgets");
+      widgets.innerHTML = "";
+      widgetsData.forEach(item => {
+        const widget = document.createElement("div");
+        widget.className = "widget";
+        widget.innerHTML = `<h3>${item.label}</h3><p>Coming soon...</p>`;
+        widgets.appendChild(widget);
+      });
+    }
+
+    function logout() { alert("Logged out!"); }
+
+    // Export buttons demo
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll('.export-btns button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('This is a demo. Implement export logic as needed.');
+        });
+      });
+    });
+
+    renderStats();
+    renderWidgets();
+  </script>
+</body>
+</html>

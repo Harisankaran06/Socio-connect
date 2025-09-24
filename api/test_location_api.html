@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Location API</title>
+</head>
+<body>
+    <h1>Location API Test</h1>
+    <button onclick="testLocationAPI()">Test Location API</button>
+    <div id="results"></div>
+
+    <script>
+        async function testLocationAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = 'Testing...';
+            
+            try {
+                // Test the new location endpoint
+                const response = await fetch('http://localhost:8080/complaints.php?endpoint=locations&mc_area=MC1');
+                const data = await response.json();
+                
+                resultsDiv.innerHTML = '<h3>API Response:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    resultsDiv.innerHTML += '<h3>Sample Location Data:</h3>';
+                    data.data.slice(0, 3).forEach(complaint => {
+                        resultsDiv.innerHTML += `
+                            <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                                <strong>${complaint.title}</strong><br>
+                                Category: ${complaint.category}<br>
+                                Status: ${complaint.status}<br>
+                                Location: ${complaint.location}<br>
+                                Coordinates: ${complaint.latitude}, ${complaint.longitude}
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<h3>Error:</h3><pre>' + error.message + '</pre>';
+            }
+        }
+    </script>
+</body>
+</html>

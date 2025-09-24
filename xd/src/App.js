@@ -3,6 +3,15 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import LoginPage from './Loginpage.js';
 import NextLoginTamilNadu from './Tamilnadu/NLTN.js';
 import InterfaceMC2 from './Tamilnadu/MC/MC2/INTMC2.js';
+import DPTN from './Tamilnadu/MC/MC1/DP/DPMC1.js';
+
+// MC1 Department imports
+import ELEMC1 from './Tamilnadu/MC/MC1/DP/ELEMC1.js';
+import WATMC1 from './Tamilnadu/MC/MC1/DP/WATMC1.js';
+import SANMC1 from './Tamilnadu/MC/MC1/DP/SANMC1.js';
+import ROAMC1 from './Tamilnadu/MC/MC1/DP/ROAMC1.js';
+import PWDMC1 from './Tamilnadu/MC/MC1/DP/PWDMC1.js';
+
 import DBTNMC2 from './Tamilnadu/MC/MC2/DBMC2.js';
 import DPTNMC2 from './Tamilnadu/MC/MC2/DPMC2.js';
 import MAPTNMC2 from './Tamilnadu/MC/MC2/MAPMC2.js';
@@ -196,15 +205,21 @@ import PERMC25 from './Tamilnadu/MC/MC25/PERMC25.js';
 import NLJK from './Jharkand/NLJK.js';
 import Interface from './Tamilnadu/MC/MC1/INTMC1.js';
 import INTJK from './Jharkand/INTJK.js';
-import DBTN from './Tamilnadu/MC/MC1/DBMC1.js';
+import DBTN from './Tamilnadu/MC/MC1/DB/DBMC1.js';
+import OPEMC1 from './Tamilnadu/MC/MC1/DB/OPEMC1.js';
+import PROMC1 from './Tamilnadu/MC/MC1/DB/PROMC1.js';
+import RESMC1 from './Tamilnadu/MC/MC1/DB/RESMC1.js';
+import SUCMC1 from './Tamilnadu/MC/MC1/DB/SUCMC1.js';
+import CLOMC1 from './Tamilnadu/MC/MC1/DB/CLOMC1.js';
 import DBJK from './Jharkand/DBJK.js';
-import DPTN from './Tamilnadu/MC/MC1/DPMC1.js';
 import DPJK from './Jharkand/DPJK.js';
 import MAPTN from './Tamilnadu/MC/MC1/MAPMC1.js';
 import MAPJK from './Jharkand/MAPJK.js';
 import ANATN from './Tamilnadu/MC/MC1/ANAMC1.js';
 import ANAJK from './Jharkand/ANAJK.js';
 import PERTN from './Tamilnadu/MC/MC1/PERMC1.js';
+import TOTMC1 from './Tamilnadu/MC/MC1/DB/TOTMC1.js';
+
 import PERJK from './Jharkand/PERJK.js';
 
 // A new, simplified App component that handles navigation
@@ -222,6 +237,20 @@ function AppContent() {
       <Route path="/interfacemc2" element={<InterfaceMC2 />} />
       <Route path="/intjk" element={<INTJK />} />
       <Route path="/dbtn" element={<DBTN />} />
+  <Route path="/opemc1" element={<OPEMC1 />} />
+  <Route path="/promc1" element={<PROMC1 />} />
+  <Route path="/resmc1" element={<RESMC1 />} />
+  <Route path="/sucmc1" element={<SUCMC1 />} />
+  <Route path="/clomc1" element={<CLOMC1 />} />
+      <Route path="/totmc1" element={<TOTMC1 />} />
+      
+      {/* MC1 Department Routes */}
+      <Route path="/tamilnadu/mc1/elemc1" element={<ELEMC1 />} />
+      <Route path="/tamilnadu/mc1/watmc1" element={<WATMC1 />} />
+      <Route path="/tamilnadu/mc1/sanmc1" element={<SANMC1 />} />
+      <Route path="/tamilnadu/mc1/roamc1" element={<ROAMC1 />} />
+      <Route path="/tamilnadu/mc1/pwdmc1" element={<PWDMC1 />} />
+      
       <Route path="/dbtnmc2" element={<DBTNMC2 />} />
       <Route path="/dbjk" element={<DBJK />} />
       <Route path="/dptn" element={<DPTN />} />

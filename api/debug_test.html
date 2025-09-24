@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Debug Test</title>
+</head>
+<body>
+    <h1>API Debug Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        const API_BASES = [
+            'http://localhost:8080',
+            'http://localhost/project/desktop/web/api',
+            'http://127.0.0.1/project/desktop/web/api'
+        ];
+        
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Testing API endpoints...</h2>';
+            
+            for (const baseUrl of API_BASES) {
+                try {
+                    results.innerHTML += `<h3>Testing: ${baseUrl}</h3>`;
+                    
+                    // Test 1: Basic stats endpoint
+                    const statsUrl = `${baseUrl}/complaints.php/stats?mc_area=MC1`;
+                    results.innerHTML += `<p>🔄 Testing stats: ${statsUrl}</p>`;
+                    
+                    const response = await fetch(statsUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        results.innerHTML += `<p>✅ Stats API Success: ${JSON.stringify(data)}</p>`;
+                        
+                        // Test 2: Update complaint endpoint
+                        const updateUrl = `${baseUrl}/complaints.php/update-complaint`;
+                        results.innerHTML += `<p>🔄 Testing update: ${updateUrl}</p>`;
+                        
+                        const updateResponse = await fetch(updateUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: 1,
+                                status: 'resolved',
+                                mc_area: 'MC1'
+                            })
+                        });
+                        
+                        if (updateResponse.ok) {
+                            const updateData = await updateResponse.json();
+                            results.innerHTML += `<p>✅ Update API Success: ${JSON.stringify(updateData)}</p>`;
+                        } else {
+                            const errorText = await updateResponse.text();
+                            results.innerHTML += `<p>❌ Update API Error: ${updateResponse.status} - ${errorText}</p>`;
+                        }
+                        
+                        break; // Success, no need to try other URLs
+                        
+                    } else {
+                        const errorText = await response.text();
+                        results.innerHTML += `<p>❌ Stats API Error: ${response.status} - ${errorText}</p>`;
+                    }
+                    
+                } catch (error) {
+                    results.innerHTML += `<p>💥 Exception: ${error.message}</p>`;
+                }
+            }
+        }
+        
+        // Run test when page loads
+        testAPI();
+    </script>
+</body>
+</html>

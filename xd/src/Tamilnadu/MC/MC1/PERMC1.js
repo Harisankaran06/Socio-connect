@@ -3,23 +3,41 @@ import { useNavigate } from 'react-router-dom';
 
 const styles = `
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-  body, #root { min-height: 100vh; background: linear-gradient(135deg, #e8ebff, #f8f5ff); }
-  .perf-main { width: 100%; max-width: 1100px; margin: 40px auto; display: flex; flex-direction: column; align-items: stretch; position: relative; padding: 0 15px; }
+  :root { --accent: #9b5cf1; }
+  html, body { height: 100%; }
+  body, #root { min-height: 100vh; background: linear-gradient(135deg, #e8ebff, #f8f5ff); position: relative; }
+  body::before, body::after { content: ""; position: absolute; border-radius: 50%; background: rgba(174,144,255,0.18); z-index: 0; }
+  body::before { width: 400px; height: 400px; top: -100px; left: -100px; }
+  body::after { width: 300px; height: 300px; bottom: -80px; right: -80px; }
+  .perf-main { width: 100%; max-width: 1100px; margin: 40px auto; display: flex; flex-direction: column; align-items: stretch; position: relative; padding: 0 15px; z-index: 1; }
   .back-arrow {
     position: absolute;
     left: 15px;
-    top: 0;
+    top: 15px;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 100;
+  }
+  .back-arrow:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(124, 77, 255, 0.3);
   }
   .perf-title { font-size: 2rem; color: #7c4dff; margin-bottom: 28px; font-weight: 700; letter-spacing: -1px; text-align: center; }
   .card { 
     background: #fff; 
     border-radius: 18px; 
     padding: 28px; 
-    box-shadow: 0 8px 32px rgba(155,92,241,0.12); 
-    border: 1.5px solid #ececec; 
+    box-shadow: 0 8px 32px rgba(155,92,241,0.18), 0 2px 10px rgba(155,92,241,0.07); 
+    border: 1.5px solid rgba(155,92,241,0.10); 
     margin-bottom: 25px;
   }
   .card-title { 
@@ -118,7 +136,9 @@ export default function PERTN() {
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       <style>{styles}</style>
       <div className="perf-main">
-        <img src="/images/back.png" alt="Back" className="back-arrow" onClick={() => navigate(-1)} />
+        <div className="back-arrow" onClick={() => navigate(-1)}>
+          <span className="material-icons" style={{ fontSize: '24px', color: '#7c4dff' }}>arrow_back</span>
+        </div>
         <div style={{display:'flex',justifyContent:'center',marginBottom:18}}>
           <img src="/images/logo.png" alt="Socio Connect Logo" style={{height:60,objectFit:'contain'}} />
         </div>
